@@ -55,12 +55,13 @@ class MyFrame(wx.Frame):
 
     def ButtonStart(self, event):  # wxGlade: MyFrame.<event_handler>
 	    self.label_1.SetLabel("Test")
+	    subprocess.call(["sudo","apachectl","start"])
 
     def ButtonStop(self, event):  # wxGlade: MyFrame.<event_handler>
-        event.Skip()
+        subprocess.call(["sudo","apachectl","stop"])
 
     def RestartButton(self, event):  # wxGlade: MyFrame.<event_handler>
-        event.Skip()
+        subprocess.call(["sudo","apachectl","restart"]) 
 
 # end of class MyFrame
 if __name__ == "__main__":
