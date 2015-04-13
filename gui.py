@@ -6,6 +6,7 @@
 
 import wx
 import subprocess
+import threading
 
 # begin wxGlade: dependencies
 import gettext
@@ -14,6 +15,33 @@ import gettext
 # begin wxGlade: extracode
 # end wxGlade
 
+class StartThread(threading.Thread):
+  def __init__(self,ref):
+        threading.Thread.__init__(self)
+        self.ref = ref
+  
+  def run(self):
+    # fetch a binary file
+	subprocess.call(["sudo","apachectl","start"])
+	
+class StopThread(threading.Thread):
+  def __init__(self,ref):
+        threading.Thread.__init__(self)
+        self.ref = ref
+  
+  def run(self):
+    # fetch a binary file
+	subprocess.call(["sudo","apachectl","stop"])
+
+class RestartThread(threading.Thread):
+  def __init__(self,ref):
+        threading.Thread.__init__(self)
+        self.ref = ref
+  
+  def run(self):
+    # fetch a binary file
+	subprocess.call(["sudo","apachectl","restart"])
+		
 
 class MyFrame(wx.Frame):
     def __init__(self, *args, **kwds):
@@ -54,14 +82,25 @@ class MyFrame(wx.Frame):
         # end wxGlade
 
     def ButtonStart(self, event):  # wxGlade: MyFrame.<event_handler>
-	    self.label_1.SetLabel("Test")
-	    subprocess.call(["sudo","apachectl","start"])
+	    self.label_1.SetLabel("Start")
+	    #subprocess.call(["sudo","apachectl","start"])
+	    startthread = StartThread(self)
+            startthread.start()
+	    self.label_1.SetLabel("Running")
 
     def ButtonStop(self, event):  # wxGlade: MyFrame.<event_handler>
-        subprocess.call(["sudo","apachectl","stop"])
+        #subprocess.call(["sudo","apachectl","stop"])
+	stopthread = StopThread(self)
+        stopthread.start()
+	self.label_1.SetLabel("Stopped")
 
     def RestartButton(self, event):  # wxGlade: MyFrame.<event_handler>
-        subprocess.call(["sudo","apachectl","restart"]) 
+        #subprocess.call(["sudo","apachectl","restart"])
+	self.label_1.SetLabel("Stop")
+	restartthread = RestartThread(self)
+        restartthread.start()
+	self.label_1.SetLabel("Running")
+ 
 
 # end of class MyFrame
 if __name__ == "__main__":
