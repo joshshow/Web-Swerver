@@ -13,6 +13,52 @@ import gettext
 # begin wxGlade: extracode
 # end wxGlade
 
+class StartThread(threading.Thread):
+  def __init__(self,ref):
+        threading.Thread.__init__(self)
+        self.ref = ref
+  
+  def run(self):
+    # fetch a binary file
+	subprocess.call(["sudo","apachectl","start"])
+	
+class StopThread(threading.Thread):
+  def __init__(self,ref):
+        threading.Thread.__init__(self)
+        self.ref = ref
+  
+  def run(self):
+    # fetch a binary file
+	subprocess.call(["sudo","apachectl","stop"])
+
+class RestartThread(threading.Thread):
+  def __init__(self,ref):
+        threading.Thread.__init__(self)
+        self.ref = ref
+  
+  def run(self):
+    # fetch a binary file
+	time.sleep(5)
+	subprocess.call(["sudo","apachectl","restart"])
+		
+class DownloadThread(threading.Thread):
+  def __init__(self,ref):
+        threading.Thread.__init__(self)
+        self.ref = ref
+  
+  def run(self):
+    # fetch a binary file
+	pass
+
+class UploadThread(threading.Thread):
+  def __init__(self,ref):
+        threading.Thread.__init__(self)
+        self.ref = ref
+  
+  def run(self):
+    # fetch a binary file
+	pass
+
 
 class MyFrame1(wx.Frame):
     def __init__(self, *args, **kwds):
@@ -90,6 +136,32 @@ class MyFrame2(wx.Frame):
         self.SetSizer(sizer_3)
         self.Layout()
         # end wxGlade
+    
+    def startButton
+        self.label_1.SetLabel("Start")
+	    #subprocess.call(["sudo","apachectl","start"])
+	    startthread = StartThread(self)
+        startthread.start()
+	    self.statusText.SetLabel("Running")
+
+    def stopButton
+        #subprocess.call(["sudo","apachectl","stop"])
+	    stopthread = StopThread(self)
+        stopthread.start()
+	    self.statusText.SetLabel("Stopped")
+
+    def restartButton
+        #subprocess.call(["sudo","apachectl","restart"])
+	    self.statusText.SetLabel("Stopped")	
+	    restartthread = RestartThread(self)
+        restartthread.start()
+	    self.statusText.SetLabel("Runn")	
+
+    def uploadButton
+        
+    def goButton
+        
+   
 
 # end of class MyFrame2
 if __name__ == "__main__":
