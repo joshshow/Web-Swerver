@@ -137,29 +137,29 @@ class MyFrame2(wx.Frame):
         self.Layout()
         # end wxGlade
     
-    def startButton
+    def startButton(self,event):
         self.label_1.SetLabel("Start")
 	    #subprocess.call(["sudo","apachectl","start"])
 	    startthread = StartThread(self)
         startthread.start()
 	    self.statusText.SetLabel("Running")
 
-    def stopButton
+    def stopButton(self,event):
         #subprocess.call(["sudo","apachectl","stop"])
 	    stopthread = StopThread(self)
         stopthread.start()
 	    self.statusText.SetLabel("Stopped")
 
-    def restartButton
+    def restartButton(self,event):
         #subprocess.call(["sudo","apachectl","restart"])
 	    self.statusText.SetLabel("Stopped")	
 	    restartthread = RestartThread(self)
         restartthread.start()
 	    self.statusText.SetLabel("Runn")	
 
-    def uploadButton
+    def uploadButton(self,event):
         
-    def goButton
+    def goButton(self,event):
         
    
 
