@@ -16,6 +16,8 @@ import gettext
 # begin wxGlade: extracode
 # end wxGlade
 
+filename = ''
+
 class StartThread(threading.Thread):
   def __init__(self,ref):
         threading.Thread.__init__(self)
@@ -54,14 +56,24 @@ class DownloadThread(threading.Thread):
 	pass
 
 class UploadThread(threading.Thread):
-  def __init__(self,ref):
+  def __init__(self,ref,wx):
         threading.Thread.__init__(self)
         self.ref = ref
+        wx = wx
   
   def run(self):
     # fetch a binary file
-	pass
-
+	global filename
+    #filename = ''
+        #dlg = wx.FileDialog(message="Choose a file")
+        #if dlg.ShowModal() == wx.ID_OK:
+        #    filename = dlg.GetPath()
+        #dlg.Destroy()
+        #if not filename:
+        #   return
+        #print filename
+        subprocess.call(["sudo","cp",filename,"/var/www/html"])
+        subprocess.call(["ls","/var/www/html"])
 
 class MyFrame1(wx.Frame):
     def __init__(self, *args, **kwds):
@@ -133,6 +145,7 @@ class MyFrame1(wx.Frame):
         self.statusText.SetLabel("Running")	
 
     def uploadBtn(self,event):
+        global filename        
         filename = ''
         dlg = wx.FileDialog(self, message="Choose a file")
         if dlg.ShowModal() == wx.ID_OK:
@@ -141,9 +154,12 @@ class MyFrame1(wx.Frame):
         if not filename:
            return
         print filename
-        subprocess.call(["sudo","cp",filename,"/var/www/html"])
-        subprocess.call(["ls","/var/www/html"])
-        
+        #subprocess.call(["sudo","cp",filename,"/var/www/html"])
+        #subprocess.call(["ls","/var/www/html"])
+        uploadthread = UploadThread(self,wx)
+        uploadthread.start()        
+
+
     def goBtn(self,event):
         print "Go called"
 
