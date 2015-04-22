@@ -5,6 +5,9 @@
 #
 
 import wx
+import subprocess
+import threading
+import time
 
 # begin wxGlade: dependencies
 import gettext
@@ -12,6 +15,52 @@ import gettext
 
 # begin wxGlade: extracode
 # end wxGlade
+
+class StartThread(threading.Thread):
+  def __init__(self,ref):
+        threading.Thread.__init__(self)
+        self.ref = ref
+  
+  def run(self):
+    # fetch a binary file
+	subprocess.call(["sudo","apachectl","start"])
+	
+class StopThread(threading.Thread):
+  def __init__(self,ref):
+        threading.Thread.__init__(self)
+        self.ref = ref
+  
+  def run(self):
+    # fetch a binary file
+	subprocess.call(["sudo","apachectl","stop"])
+
+class RestartThread(threading.Thread):
+  def __init__(self,ref):
+        threading.Thread.__init__(self)
+        self.ref = ref
+  
+  def run(self):
+    # fetch a binary file
+	time.sleep(5)
+	subprocess.call(["sudo","apachectl","restart"])
+		
+class DownloadThread(threading.Thread):
+  def __init__(self,ref):
+        threading.Thread.__init__(self)
+        self.ref = ref
+  
+  def run(self):
+    # fetch a binary file
+	pass
+
+class UploadThread(threading.Thread):
+  def __init__(self,ref):
+        threading.Thread.__init__(self)
+        self.ref = ref
+  
+  def run(self):
+    # fetch a binary file
+	pass
 
 
 class MyFrame1(wx.Frame):
@@ -30,6 +79,11 @@ class MyFrame1(wx.Frame):
 
         self.__set_properties()
         self.__do_layout()
+        self.Bind(wx.EVT_BUTTON, self.startBut, self.startButton)
+        self.Bind(wx.EVT_BUTTON, self.stopBut, self.stopButton)
+        self.Bind(wx.EVT_BUTTON, self.restartBut, self.restartButton)
+        self.Bind(wx.EVT_BUTTON, self.goBut, self.goButton)
+        self.Bind(wx.EVT_BUTTON, self.uploadBut, self.uploadButton)
         # end wxGlade
 
     def __set_properties(self):
@@ -58,13 +112,38 @@ class MyFrame1(wx.Frame):
         self.Layout()
         # end wxGlade
 
+    def startBut(self,event):
+	    self.statusText.SetLabel("Start")
+	    startthread = StartThread(self)
+	    startthread.start()
+	    self.statusText.SetLabel("Running")
+
+    def stopBut(self,event):
+      #subprocess.call(["sudo","apachectl","stop"])
+	    stopthread = StopThread(self)
+            stopthread.start()
+	    self.statusText.SetLabel("Stopped")
+
+    def restartBut(self,event):
+        #subprocess.call(["sudo","apachectl","restart"])
+	    self.statusText.SetLabel("Stopped")	
+	    restartthread = RestartThread(self)
+            restartthread.start()
+	    self.statusText.SetLabel("Runn")	
+
+    def uploadBut(self,event):
+        print "Hello"
+        pass
+    def goBut(self,event):
+        pass
+
 # end of class MyFrame1
 if __name__ == "__main__":
     gettext.install("app") # replace with the appropriate catalog name
 
     app = wx.PySimpleApp(0)
     wx.InitAllImageHandlers()
-    mainwindow = (None, wx.ID_ANY, "")
+    mainwindow = MyFrame1(None, wx.ID_ANY, "")
     app.SetTopWindow(mainwindow)
     mainwindow.Show()
     app.MainLoop()
