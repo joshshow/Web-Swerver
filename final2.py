@@ -79,11 +79,11 @@ class MyFrame1(wx.Frame):
 
         self.__set_properties()
         self.__do_layout()
-        self.Bind(wx.EVT_BUTTON, self.startBut, self.startButton)
-        self.Bind(wx.EVT_BUTTON, self.stopBut, self.stopButton)
-        self.Bind(wx.EVT_BUTTON, self.restartBut, self.restartButton)
-        self.Bind(wx.EVT_BUTTON, self.goBut, self.goButton)
-        self.Bind(wx.EVT_BUTTON, self.uploadBut, self.uploadButton)
+        self.Bind(wx.EVT_BUTTON, self.startBtn, self.startButton)
+        self.Bind(wx.EVT_BUTTON, self.stopBtn, self.stopButton)
+        self.Bind(wx.EVT_BUTTON, self.restartBtn, self.restartButton)
+        self.Bind(wx.EVT_BUTTON, self.goBtn, self.goButton)
+        self.Bind(wx.EVT_BUTTON, self.uploadBtn, self.uploadButton)
         # end wxGlade
 
     def __set_properties(self):
@@ -112,30 +112,40 @@ class MyFrame1(wx.Frame):
         self.Layout()
         # end wxGlade
 
-    def startBut(self,event):
-	    self.statusText.SetLabel("Start")
-	    startthread = StartThread(self)
-	    startthread.start()
-	    self.statusText.SetLabel("Running")
+    def startBtn(self,event):
+        #subprocess.call(["sudo","apachectl","start"])
+        self.statusText.SetLabel("Start")
+        startthread = StartThread(self)
+        startthread.start()
+        self.statusText.SetLabel("Running")
 
-    def stopBut(self,event):
-      #subprocess.call(["sudo","apachectl","stop"])
-	    stopthread = StopThread(self)
-            stopthread.start()
-	    self.statusText.SetLabel("Stopped")
+    def stopBtn(self,event):
+        #subprocess.call(["sudo","apachectl","stop"])
+        stopthread = StopThread(self)
+        stopthread.start()
+        self.statusText.SetLabel("Stopped")
 
-    def restartBut(self,event):
+    def restartBtn(self,event):
         #subprocess.call(["sudo","apachectl","restart"])
-	    self.statusText.SetLabel("Stopped")	
-	    restartthread = RestartThread(self)
-            restartthread.start()
-	    self.statusText.SetLabel("Runn")	
+        self.statusText.SetLabel("Stopped")	
+        restartthread = RestartThread(self)
+        restartthread.start()
+        self.statusText.SetLabel("Running")	
 
-    def uploadBut(self,event):
-        print "Hello"
-        pass
-    def goBut(self,event):
-        pass
+    def uploadBtn(self,event):
+        filename = ''
+        dlg = wx.FileDialog(self, message="Choose a file")
+        if dlg.ShowModal() == wx.ID_OK:
+            filename = dlg.GetPath()
+        dlg.Destroy()
+        if not filename:
+           return
+        print filename
+        subprocess.call(["sudo","cp",filename,"/var/www/html"])
+        subprocess.call(["ls","/var/www/html"])
+        
+    def goBtn(self,event):
+        print "Go called"
 
 # end of class MyFrame1
 if __name__ == "__main__":
