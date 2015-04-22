@@ -161,7 +161,7 @@ class MyFrame1(wx.Frame):
 
 
     def goBtn(self,event):
-        print "Go called"
+        subprocess.call(["sensible-browser","localhost"])
 
 # end of class MyFrame1
 if __name__ == "__main__":
